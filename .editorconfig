@@ -1,0 +1,11 @@
+# top-most EditorConfig file
+root = true
+
+[*]
+indent_size = 4
+
+[*.c]
+indent_style = space
+
+[Makefile]
+indent_style = tab
