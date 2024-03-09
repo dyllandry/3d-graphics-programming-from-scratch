@@ -94,6 +94,40 @@ void update(void) {
 
 }
 
+int max(int x, int y) {
+    if (x > y) {
+        return x;
+    } else {
+        return y;
+    }
+}
+
+int min(int x, int y) {
+    if (x > y) {
+        return y;
+    } else {
+        return x;
+    }
+}
+
+int bound(int value, int min_value, int max_value) {
+    return max(min(value, max_value), min_value);
+}
+
+void draw_rect(int x, int y, int width, int height, uint32_t color) {
+    int x_start = bound(x, 0, window_width);
+    int x_end = bound(x + width, 0, window_width);
+    int y_start = bound(y, 0, window_height);
+    int y_end = bound(y + height, 0, window_height);
+
+    for (int y_current = y_start; y_current < y_end; y_current++) {
+        for (int x_current = x_start; x_current < x_end; x_current++) {
+            int pixel_pos = (y_current * window_width) + x_current;
+            color_buffer[pixel_pos] = color;
+        }
+    }
+}
+
 void draw_grid(void) {
     // Draw a background grid that fills the entire window.
     // Lines should be rendered at every row/col multiple of 10.
@@ -143,6 +177,7 @@ void render(void) {
     SDL_RenderClear(renderer);
 
     draw_grid();
+    draw_rect(400, 20, 500, 100, 0xFFCC00CC);
 
     render_color_buffer();
     clear_color_buffer(0xFFFFFF00);
