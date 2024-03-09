@@ -1,10 +1,16 @@
 #include <stdio.h>
+#include <stdint.h>
 #include <stdbool.h>
 #include <SDL2/SDL.h>
 
 bool is_running = false;
 SDL_Window* window = NULL;
 SDL_Renderer* renderer = NULL;
+
+uint32_t* color_buffer = NULL;
+
+int window_width = 800;
+int window_height = 600;
 
 // Returns bool if SDL initialization worked.
 bool initialize_window(void) {
@@ -17,8 +23,8 @@ bool initialize_window(void) {
         NULL,                   // window title
         SDL_WINDOWPOS_CENTERED, // window pos x
         SDL_WINDOWPOS_CENTERED, // window pos y
-        800,                    // window width
-        600,                    // window height
+        window_width,                    // window width
+        window_height,                    // window height
         SDL_WINDOW_BORDERLESS
     );
 
@@ -42,7 +48,8 @@ bool initialize_window(void) {
 }
 
 void setup(void) {
-
+    int num_pixels = window_width * window_height;
+    color_buffer = malloc(sizeof *color_buffer * num_pixels);
 }
 
 void process_input(void) {
@@ -72,6 +79,14 @@ void render(void) {
     SDL_RenderPresent(renderer);
 }
 
+void destroy_window(void) {
+    // Opposite order of allocation.
+    free(color_buffer);
+    SDL_DestroyRenderer(renderer);
+    SDL_DestroyWindow(window);
+    SDL_Quit();
+}
+
 int main(void) {
     is_running = initialize_window();
 
@@ -82,6 +97,8 @@ int main(void) {
         update();
         render();
     }
+
+    destroy_window();
 
     return 0;
 }
