@@ -94,6 +94,26 @@ void update(void) {
 
 }
 
+void draw_grid(void) {
+    // Draw a background grid that fills the entire window.
+    // Lines should be rendered at every row/col multiple of 10.
+    for (int y = 0; y < window_height; y++) {
+        for (int x = 0; x < window_width; x++) {
+            uint32_t grid_color = 0xFF888888;
+            uint32_t background_color = 0xFF000000;
+
+            uint32_t pixel_color = background_color;
+            bool is_pixel_on_grid_line = y % 10 == 0 || x % 10 == 0;
+            if (is_pixel_on_grid_line) {
+                pixel_color = grid_color;
+            }
+
+            int pixel_pos = (y * window_width) + x;
+            color_buffer[pixel_pos] = pixel_color;
+        }
+    }
+}
+
 void render_color_buffer(void) {
     SDL_UpdateTexture(
         color_buffer_texture,
@@ -121,6 +141,8 @@ void clear_color_buffer(uint32_t color) {
 void render(void) {
     SDL_SetRenderDrawColor(renderer, 255, 0, 0, 255);
     SDL_RenderClear(renderer);
+
+    draw_grid();
 
     render_color_buffer();
     clear_color_buffer(0xFFFFFF00);
