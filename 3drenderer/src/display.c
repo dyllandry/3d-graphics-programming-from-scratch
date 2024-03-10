@@ -73,6 +73,13 @@ int bound(int value, int min_value, int max_value) {
     return max(min(value, max_value), min_value);
 }
 
+void draw_pixel(int x, int y, uint32_t color) {
+    if (x < window_width && x >= 0 && y < window_width && y >= 0) {
+        int pixel_pos = (y * window_width) + x;
+        color_buffer[pixel_pos] = color;
+    }
+}
+
 void draw_rect(int x, int y, int width, int height, uint32_t color) {
     int x_start = bound(x, 0, window_width);
     int x_end = bound(x + width, 0, window_width);
