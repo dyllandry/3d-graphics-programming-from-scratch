@@ -81,15 +81,11 @@ void draw_pixel(int x, int y, uint32_t color) {
 }
 
 void draw_rect(int x, int y, int width, int height, uint32_t color) {
-    int x_start = bound(x, 0, window_width);
-    int x_end = bound(x + width, 0, window_width);
-    int y_start = bound(y, 0, window_height);
-    int y_end = bound(y + height, 0, window_height);
-
-    for (int y_current = y_start; y_current < y_end; y_current++) {
-        for (int x_current = x_start; x_current < x_end; x_current++) {
-            int pixel_pos = (y_current * window_width) + x_current;
-            color_buffer[pixel_pos] = color;
+    for (int i = 0; i < width; i++) {
+        for (int j = 0; j < height; j++) {
+            int  current_x = x + i;
+            int current_y = y + j;
+            draw_pixel(current_x, current_y, color);
         }
     }
 }
@@ -99,7 +95,7 @@ void draw_grid(void) {
     // Lines should be rendered at every row/col multiple of 10.
     for (int y = 0; y < window_height; y++) {
         for (int x = 0; x < window_width; x++) {
-            uint32_t grid_color = 0xFF888888;
+            uint32_t grid_color = 0xFF444444;
             uint32_t background_color = 0xFF000000;
 
             uint32_t pixel_color = background_color;
